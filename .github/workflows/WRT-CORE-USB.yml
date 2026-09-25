@@ -102,7 +102,7 @@ jobs:
           # 本仓库固定为 ZN-M2 NoWiFi 版本；不再依赖旧仓库分支名判断
           echo "WRT_TYPE=ZN-M2无WiFi + USB存储" >> $GITHUB_ENV
           echo "WRT_CACHE_VARIANT=nowifi-usb" >> $GITHUB_ENV
-          CUSTOM_HASH=$(find "$GITHUB_WORKSPACE/Config" "$GITHUB_WORKSPACE/Scripts" -type f -print0 | sort -z | xargs -0 sha256sum | sha256sum | cut -d' ' -f1)
+          CUSTOM_HASH=$(sha256sum "$GITHUB_WORKSPACE/Config/$WRT_CONFIG.txt" "$GITHUB_WORKSPACE/Config/GENERAL.txt" | sha256sum | cut -d' ' -f1)
           echo "WRT_CUSTOM_HASH=$CUSTOM_HASH" >> $GITHUB_ENV
           echo "WRT_KVER=none" >> $GITHUB_ENV
           echo "WRT_LIST=none" >> $GITHUB_ENV
