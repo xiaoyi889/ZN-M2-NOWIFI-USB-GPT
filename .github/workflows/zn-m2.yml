@@ -3,7 +3,7 @@ name: ZN-M2-NoWiFi-USB
 # ZN-M2 NoWiFi 双版本编译主入口
 # 一次工作流同时调用两个独立编译核心：
 #   1. WRT-CORE.yml  -> ZN-M2 + NoWiFi
-#   2. WRT-CORE2.yml -> ZN-M2 + NoWiFi + USB
+#   2. WRT-CORE-USB.yml -> ZN-M2 + NoWiFi + USB
 
 on:
   pull_request:
@@ -48,7 +48,7 @@ jobs:
 
   nowifi-usb:
     name: ZN-M2 NoWiFi + USB
-    uses: ./.github/workflows/WRT-CORE2.yml
+    uses: ./.github/workflows/WRT-CORE-USB.yml
     with:
       WRT_CONFIG: IPQ60XX-WIFI-NO-ZN-M2
       WRT_THEME: aurora
