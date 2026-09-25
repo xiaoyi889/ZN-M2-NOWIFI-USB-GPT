@@ -49,54 +49,6 @@ if [ -n "$WRT_PACKAGE" ]; then
 	echo -e "$WRT_PACKAGE" >> ./.config
 fi
 
-#USB存储组件
-echo "CONFIG_PACKAGE_kmod-usb3=y" >> ./.config
-echo "CONFIG_PACKAGE_kmod-usb-audio=n" >> ./.config
-echo "CONFIG_PACKAGE_kmod-usb-dwc3=y" >> ./.config
-echo "CONFIG_PACKAGE_kmod-usb-dwc3-qcom=y" >> ./.config
-echo "CONFIG_PACKAGE_kmod-usb-core=y" >> ./.config
-echo "CONFIG_PACKAGE_kmod-usb-storage=y" >> ./.config
-echo "CONFIG_PACKAGE_kmod-usb-storage-extras=y" >> ./.config
-echo "CONFIG_PACKAGE_kmod-usb-storage-uas=y" >> ./.config
-echo "CONFIG_PACKAGE_kmod-fs-vfat=y" >> ./.config
-echo "CONFIG_PACKAGE_kmod-fs-exfat=y" >> ./.config
-echo "CONFIG_PACKAGE_kmod-fs-ntfs3=y" >> ./.config
-echo "CONFIG_PACKAGE_kmod-fs-ext4=y" >> ./.config
-echo "CONFIG_PACKAGE_kmod-nls-utf8=y" >> ./.config
-echo "CONFIG_PACKAGE_usbutils=y" >> ./.config
-echo "CONFIG_PACKAGE_block-mount=y" >> ./.config
-echo "CONFIG_PACKAGE_automount=n" >> ./.config
-echo "CONFIG_PACKAGE_luci-app-diskman=y" >> ./.config
-echo "CONFIG_PACKAGE_hd-idle=y" >> ./.config
-echo "CONFIG_PACKAGE_luci-app-hd-idle=y" >> ./.config
-echo "CONFIG_PACKAGE_nfs-kernel-server=y" >> ./.config
-echo "CONFIG_PACKAGE_luci-app-nfs=y" >> ./.config
-echo "CONFIG_PACKAGE_luci-app-filemanager=y" >> ./.config
-echo "CONFIG_PACKAGE_usb-modeswitch=n" >> ./.config
-echo "CONFIG_PACKAGE_usbmuxd=n" >> ./.config
-echo "CONFIG_PACKAGE_kmod-usb-serial-qualcomm=n" >> ./.config
-# USB网络/其他驱动保持精简
-echo "CONFIG_PACKAGE_kmod-usb-net=n" >> ./.config
-echo "CONFIG_PACKAGE_kmod-usb-net-cdc-eem=n" >> ./.config
-echo "CONFIG_PACKAGE_kmod-usb-net-cdc-ether=n" >> ./.config
-echo "CONFIG_PACKAGE_kmod-usb-net-cdc-mbim=n" >> ./.config
-echo "CONFIG_PACKAGE_kmod-usb-net-cdc-ncm=n" >> ./.config
-echo "CONFIG_PACKAGE_kmod-usb-net-cdc-subset=n" >> ./.config
-echo "CONFIG_PACKAGE_kmod-usb-net-huawei-cdc-ncm=n" >> ./.config
-echo "CONFIG_PACKAGE_kmod-usb-net-ipheth=n" >> ./.config
-echo "CONFIG_PACKAGE_kmod-usb-net-qmi-wwan=n" >> ./.config
-echo "CONFIG_PACKAGE_kmod-usb-net-qmi-wwan-fibocom=n" >> ./.config
-echo "CONFIG_PACKAGE_kmod-usb-net-qmi-wwan-quectel=n" >> ./.config
-echo "CONFIG_PACKAGE_kmod-usb-net-rndis=n" >> ./.config
-echo "CONFIG_PACKAGE_kmod-usb-net-rtl8150=n" >> ./.config
-echo "CONFIG_PACKAGE_kmod-usb-net-rtl8152=n" >> ./.config
-echo "CONFIG_PACKAGE_kmod-usb-net-asix=n" >> ./.config
-echo "CONFIG_PACKAGE_kmod-usb-net-asix-ax88179=n" >> ./.config
-echo "CONFIG_PACKAGE_kmod-usb-net-sierrawireless=n" >> ./.config
-echo "CONFIG_PACKAGE_kmod-usb-ohci=n" >> ./.config
-echo "CONFIG_PACKAGE_kmod-usb-uhci=n" >> ./.config
-echo "CONFIG_PACKAGE_kmod-usb-xhci=n" >> ./.config
-
 #其他可选UI组件
 echo "CONFIG_PACKAGE_luci-app-wolultra=y" >> ./.config
 echo "CONFIG_PACKAGE_luci-app-statistics=y" >> ./.config
