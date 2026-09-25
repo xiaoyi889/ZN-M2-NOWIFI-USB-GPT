@@ -1,5 +1,5 @@
 #云编译公用核心
-name: WRT-CORE
+name: ZN-M2-NoWiFi-USB-Core
 
 on:
   workflow_call:
@@ -99,11 +99,8 @@ jobs:
             echo "WRT_CACHE_SCOPE=$GITHUB_REF_NAME" >> $GITHUB_ENV
             echo "WRT_BUILD_BRANCH=$GITHUB_REF_NAME" >> $GITHUB_ENV
           fi
-          if [ "$GITHUB_REF_NAME" = "dev/zn-m2-usb" ]; then
-            echo "WRT_TYPE=ZN-M2无WiFi + USB存储" >> $GITHUB_ENV
-          else
-            echo "WRT_TYPE=ZN-M2无WiFi精简版" >> $GITHUB_ENV
-          fi
+          # 本仓库固定为 ZN-M2 NoWiFi + USB 存储版本；不再依赖旧仓库分支名判断
+          echo "WRT_TYPE=ZN-M2无WiFi + USB存储" >> $GITHUB_ENV
           echo "WRT_KVER=none" >> $GITHUB_ENV
           echo "WRT_LIST=none" >> $GITHUB_ENV
 
@@ -240,14 +237,15 @@ jobs:
       - name: Release Firmware
         uses: softprops/action-gh-release@master
         with:
-          tag_name: 精简版${{env.WRT_CONFIG}}-${{env.WRT_INFO}}-${{env.WRT_BRANCH}}-${{env.WRT_DATE}}
+          tag_name: ZN-M2-USB-${{env.WRT_CONFIG}}-${{env.WRT_INFO}}-${{env.WRT_BRANCH}}-${{env.WRT_DATE}}
           files: ./wrt/upload/*.*
           body: |
             固件类型：${{env.WRT_TYPE}}
-            请注意选择，不要选错！
-            不要问，刷就完事了！
+            项目：ZN-M2 NoWiFi + USB 存储
+            目标设备：ZN-M2 / IPQ6018
 
-            全系带开源硬件加速，别问了！
+            本固件为 NoWiFi 版本：不启用 ath11k 无线功能。
+            USB 存储、NFS、磁盘管理等功能按仓库配置构建。
 
             源码：${{env.WRT_REPO}}
             构建分支：${{env.WRT_BUILD_BRANCH}}
