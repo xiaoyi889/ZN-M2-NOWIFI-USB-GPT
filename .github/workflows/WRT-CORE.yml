@@ -99,7 +99,7 @@ jobs:
             echo "WRT_CACHE_SCOPE=$GITHUB_REF_NAME" >> $GITHUB_ENV
             echo "WRT_BUILD_BRANCH=$GITHUB_REF_NAME" >> $GITHUB_ENV
           fi
-          # 本仓库固定为 ZN-M2 NoWiFi + USB 存储版本；不再依赖旧仓库分支名判断
+          # 本仓库固定为 ZN-M2 NoWiFi 版本；不再依赖旧仓库分支名判断
           echo "WRT_TYPE=ZN-M2无WiFi" >> $GITHUB_ENV
           echo "WRT_KVER=none" >> $GITHUB_ENV
           echo "WRT_LIST=none" >> $GITHUB_ENV
