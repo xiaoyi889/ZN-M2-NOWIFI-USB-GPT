@@ -1,6 +1,10 @@
 name: ZN-M2-NoWiFi-USB
 
-# ZN-M2 NoWiFi + USB 编译主入口
+# ZN-M2 NoWiFi 双版本编译主入口
+# 一次工作流同时调用两个独立编译核心：
+#   1. WRT-CORE.yml  -> ZN-M2 + NoWiFi
+#   2. WRT-CORE2.yml -> ZN-M2 + NoWiFi + USB
+
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -25,27 +29,36 @@ on:
 permissions: write-all
 
 jobs:
-  config:
-    name: ${{matrix.CONFIG}}
-    strategy:
-      fail-fast: false
-      matrix:
-        CONFIG: [IPQ60XX-WIFI-NO-ZN-M2]
-        SOURCE: [VIKINGYFY/immortalwrt]
-        BRANCH: [main]
+  nowifi:
+    name: ZN-M2 NoWiFi
+    uses: ./.github/workflows/WRT-CORE.yml
+    with:
+      WRT_CONFIG: IPQ60XX-WIFI-NO-ZN-M2
+      WRT_THEME: aurora
+      WRT_NAME: ZN-M2-NoWiFi
+      WRT_SSID: OWRT
+      WRT_WORD: 12345678
+      WRT_IP: 192.168.10.1
+      WRT_PW: 无
+      WRT_REPO: https://github.com/VIKINGYFY/immortalwrt.git
+      WRT_BRANCH: main
+      WRT_SOURCE: VIKINGYFY/immortalwrt
+      WRT_PACKAGE: ${{inputs.PACKAGE}}
+      WRT_TEST: ${{inputs.TEST}}
 
-    # 调用公共编译核心
+  nowifi-usb:
+    name: ZN-M2 NoWiFi + USB
     uses: ./.github/workflows/WRT-CORE2.yml
     with:
-      WRT_CONFIG: ${{matrix.CONFIG}}
+      WRT_CONFIG: IPQ60XX-WIFI-NO-ZN-M2
       WRT_THEME: aurora
       WRT_NAME: ZN-M2-NoWiFi-USB
       WRT_SSID: OWRT
       WRT_WORD: 12345678
       WRT_IP: 192.168.10.1
       WRT_PW: 无
-      WRT_REPO: https://github.com/${{matrix.SOURCE}}.git
-      WRT_BRANCH: ${{matrix.BRANCH}}
-      WRT_SOURCE: ${{matrix.SOURCE}}
+      WRT_REPO: https://github.com/VIKINGYFY/immortalwrt.git
+      WRT_BRANCH: main
+      WRT_SOURCE: VIKINGYFY/immortalwrt
       WRT_PACKAGE: ${{inputs.PACKAGE}}
       WRT_TEST: ${{inputs.TEST}}
