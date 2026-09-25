@@ -101,6 +101,9 @@ jobs:
           fi
           # 本仓库固定为 ZN-M2 NoWiFi 版本；不再依赖旧仓库分支名判断
           echo "WRT_TYPE=ZN-M2无WiFi" >> $GITHUB_ENV
+          echo "WRT_CACHE_VARIANT=nowifi" >> $GITHUB_ENV
+          CUSTOM_HASH=$(find "$GITHUB_WORKSPACE/Config" "$GITHUB_WORKSPACE/Scripts" -type f -print0 | sort -z | xargs -0 sha256sum | sha256sum | cut -d' ' -f1)
+          echo "WRT_CUSTOM_HASH=$CUSTOM_HASH" >> $GITHUB_ENV
           echo "WRT_KVER=none" >> $GITHUB_ENV
           echo "WRT_LIST=none" >> $GITHUB_ENV
 
@@ -108,7 +111,7 @@ jobs:
         run: |
           git clone --depth=1 --single-branch --branch $WRT_BRANCH $WRT_REPO ./wrt/
 
-          cd ./wrt/ && echo "WRT_HASH=$(git log -1 --pretty=format:'%h')" >> $GITHUB_ENV
+          cd ./wrt/ && echo "WRT_HASH=$(git log -1 --pretty=format:'%H')" >> $GITHUB_ENV
 
           # GitHub Action 移除国内下载源
           PROJECT_MIRRORS_FILE="./scripts/projectsmirrors.json"
@@ -123,10 +126,12 @@ jobs:
       - name: Check Caches
         id: check-cache
         if: env.WRT_TEST != 'true'
-        uses: actions/cache@main
+        uses: actions/cache@v6
         with:
-          key: ${{env.WRT_CONFIG}}-${{env.WRT_INFO}}-${{env.WRT_CACHE_SCOPE}}-${{env.WRT_HASH}}
-          restore-keys: ${{env.WRT_CONFIG}}-${{env.WRT_INFO}}-${{env.WRT_CACHE_SCOPE}}-
+          key: ${{env.WRT_CONFIG}}-${{env.WRT_INFO}}-${{env.WRT_CACHE_SCOPE}}-${{env.WRT_CACHE_VARIANT}}-${{env.WRT_HASH}}-${{env.WRT_CUSTOM_HASH}}
+          restore-keys: |
+            ${{env.WRT_CONFIG}}-${{env.WRT_INFO}}-${{env.WRT_CACHE_SCOPE}}-${{env.WRT_CACHE_VARIANT}}-${{env.WRT_HASH}}-
+            ${{env.WRT_CONFIG}}-${{env.WRT_INFO}}-${{env.WRT_CACHE_SCOPE}}-${{env.WRT_CACHE_VARIANT}}-
           path: |
             ./wrt/.ccache
             ./wrt/staging_dir/host*
@@ -147,14 +152,6 @@ jobs:
             echo "caches missed!"
           fi
 
-          if ${{steps.check-cache.outputs.cache-hit != 'true'}}; then
-            CACHE_LIST=$(gh cache list --key "$WRT_CONFIG-$WRT_INFO-$WRT_CACHE_SCOPE-" | cut -f 1)
-            for CACHE_KEY in $CACHE_LIST; do
-              gh cache delete $CACHE_KEY
-            done
-
-            echo "caches cleanup done!"
-          fi
 
       - name: Update Feeds
         run: |
