@@ -1,0 +1,28 @@
+name: Delete Old ZN-M2 Workflow Runs
+
+on:
+  workflow_dispatch:
+    inputs:
+      retain_days:
+        description: '保留最近多少天的失败/取消/跳过记录；0 = 全部清理'
+        required: false
+        default: '0'
+        type: string
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  delete-runs:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Delete old failed ZN-M2 workflow runs
+        uses: Mattraks/delete-workflow-runs@v2.1.0
+        with:
+          token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          retain_days: ${{ inputs.retain_days }}
+          keep_minimum_runs: 0
+          delete_workflow_pattern: 'zn-m2-wifi-no'
+          delete_run_by_conclusion_pattern: 'failure,cancelled,skipped'
