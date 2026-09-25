@@ -1,4 +1,4 @@
-name: Delete Old ZN-M2 Workflow Runs
+name: Delete Old ZN-M2 NoWiFi-USB Workflow Runs
 
 on:
   workflow_dispatch:
@@ -24,5 +24,5 @@ jobs:
           repository: ${{ github.repository }}
           retain_days: ${{ inputs.retain_days }}
           keep_minimum_runs: 0
-          delete_workflow_pattern: 'zn-m2-wifi-no'
+          delete_workflow_pattern: 'ZN-M2-NoWiFi-USB'
           delete_run_by_conclusion_pattern: 'failure,cancelled,skipped'
