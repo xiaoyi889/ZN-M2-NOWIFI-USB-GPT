@@ -128,10 +128,9 @@ jobs:
         if: env.WRT_TEST != 'true'
         uses: actions/cache@v6
         with:
-          key: ${{env.WRT_CONFIG}}-${{env.WRT_INFO}}-${{env.WRT_CACHE_SCOPE}}-${{env.WRT_CACHE_VARIANT}}-${{env.WRT_HASH}}-${{env.WRT_CUSTOM_HASH}}
+          key: ${{env.WRT_CONFIG}}-${{env.WRT_INFO}}-${{env.WRT_CACHE_SCOPE}}-${{env.WRT_CACHE_VARIANT}}-${{env.WRT_CUSTOM_HASH}}-${{env.WRT_HASH}}
           restore-keys: |
-            ${{env.WRT_CONFIG}}-${{env.WRT_INFO}}-${{env.WRT_CACHE_SCOPE}}-${{env.WRT_CACHE_VARIANT}}-${{env.WRT_HASH}}-
-            ${{env.WRT_CONFIG}}-${{env.WRT_INFO}}-${{env.WRT_CACHE_SCOPE}}-${{env.WRT_CACHE_VARIANT}}-
+            ${{env.WRT_CONFIG}}-${{env.WRT_INFO}}-${{env.WRT_CACHE_SCOPE}}-${{env.WRT_CACHE_VARIANT}}-${{env.WRT_CUSTOM_HASH}}-
           path: |
             ./wrt/.ccache
             ./wrt/staging_dir/host*
