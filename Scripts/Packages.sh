@@ -89,7 +89,6 @@ UPDATE_PACKAGE "qbittorrent" "sbwml/luci-app-qbittorrent" "master" "" "qt6base q
 UPDATE_PACKAGE "quickfile" "sbwml/luci-app-quickfile" "main"
 # WOL 系列第三方包：逐个提取到 package/ 根目录，避免把整个仓库作为一个无效 package 源
 UPDATE_PACKAGE "luci-app-wolultra" "VIKINGYFY/packages" "main" "pkg"
-UPDATE_PACKAGE "luci-app-wolplus" "animegasan/luci-app-wolplus" "main" "pkg"
 UPDATE_PACKAGE "vnt" "lmq8267/luci-app-vnt" "main"
 
 #更新软件包版本
