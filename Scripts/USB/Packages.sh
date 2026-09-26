@@ -141,7 +141,10 @@ UPDATE_VERSION() {
 		echo "old version: $OLD_VER $OLD_HASH"
 		echo "new version: $NEW_VER $NEW_HASH"
 
-		if [[ "$NEW_VER" =~ ^[0-9].* ]] && dpkg --compare-versions "$OLD_VER" lt "$NEW_VER"; then
+		OLD_VER_CMP=$(printf '%s' "$OLD_VER" | sed 's/_/~/g')
+		NEW_VER_CMP=$(printf '%s' "$NEW_VER" | sed 's/_/~/g')
+
+		if [[ "$NEW_VER" =~ ^[0-9].* ]] && dpkg --compare-versions "$OLD_VER_CMP" lt "$NEW_VER_CMP"; then
 			sed -i "s/PKG_VERSION:=.*/PKG_VERSION:=$NEW_VER/g" "$PKG_FILE"
 			sed -i "s/PKG_HASH:=.*/PKG_HASH:=$NEW_HASH/g" "$PKG_FILE"
 			echo "$PKG_FILE version has been updated!"
