@@ -93,11 +93,19 @@ echo "CONFIG_PACKAGE_kmod-usb-net-asix-ax88179=n" >> ./.config
 echo "CONFIG_PACKAGE_kmod-usb-net-sierrawireless=n" >> ./.config
 echo "CONFIG_PACKAGE_kmod-usb-ohci=n" >> ./.config
 echo "CONFIG_PACKAGE_kmod-usb-uhci=n" >> ./.config
-echo "CONFIG_PACKAGE_kmod-usb-xhci-hcd=n" >> ./.config
 
 #其他可选UI组件
 echo "CONFIG_PACKAGE_luci-app-wolultra=y" >> ./.config
 echo "CONFIG_PACKAGE_luci-app-statistics=y" >> ./.config
+
+# NoWiFi：上游 ZN-M2 profile 会通过 DEVICE_PACKAGES 强制加入 ipq-wifi-zn_m2，显式移除该设备固件包。
+if [[ "${WRT_CONFIG,,}" == *"wifi"* && "${WRT_CONFIG,,}" == *"no"* ]]; then
+	IPQ60XX_IMAGE="./target/linux/qualcommax/image/ipq60xx.mk"
+	if [ -f "$IPQ60XX_IMAGE" ]; then
+		sed -i '/define Device\/zn_m2/,/endef/ s/ ipq-wifi-zn_m2//g' "$IPQ60XX_IMAGE"
+		echo "qualcommax ZN-M2 NoWiFi: removed ipq-wifi-zn_m2 from DEVICE_PACKAGES"
+	fi
+fi
 
 #高通平台调整
 DTS_PATH="./target/linux/qualcommax/files/arch/arm64/boot/dts/qcom/"
