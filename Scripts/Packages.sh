@@ -49,8 +49,6 @@ BROKEN_FEED_PACKAGES=(
 	"./feeds/luci/luci-app-babeld"
 	"./feeds/luci/luci-app-bmx7"
 	"./feeds/luci/luci-app-librespeed"
-	"./feeds/packages/net/mihomo-alpha"
-	"./feeds/luci/mihomo-alpha"
 )
 for PKG_DIR in "${BROKEN_FEED_PACKAGES[@]}"; do
 	if [ -e "$PKG_DIR" ] || [ -L "$PKG_DIR" ]; then
