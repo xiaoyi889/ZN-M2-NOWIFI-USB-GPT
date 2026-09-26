@@ -107,9 +107,9 @@ apply_nss_sqm_618() {
 			}
 			/^endef$/ && in_install {
 				print "\t# ZN-M2 NSS SQM 6.18 assets"
-				print "\t$(INSTALL_DIR) \$(1)/usr/lib/sqm"
-				print "\t$(INSTALL_DATA) \$(TOPDIR)/package/zn-m2-nss-sqm-assets/nss-zk.qos \$(1)/usr/lib/sqm/nss-zk.qos"
-				print "\t$(INSTALL_DATA) \$(TOPDIR)/package/zn-m2-nss-sqm-assets/nss-zk.qos.help \$(1)/usr/lib/sqm/nss-zk.qos.help"
+				print "\t$(INSTALL_DIR) $(1)/usr/lib/sqm"
+				print "\t$(INSTALL_DATA) $(TOPDIR)/package/zn-m2-nss-sqm-assets/nss-zk.qos $(1)/usr/lib/sqm/nss-zk.qos"
+				print "\t$(INSTALL_DATA) $(TOPDIR)/package/zn-m2-nss-sqm-assets/nss-zk.qos.help $(1)/usr/lib/sqm/nss-zk.qos.help"
 				print "endef"
 				in_install=0
 				inserted=1
