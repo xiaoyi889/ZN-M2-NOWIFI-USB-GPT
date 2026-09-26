@@ -7,6 +7,8 @@ CONFIG_TARGET_DEVICE_qualcommax_ipq60xx_DEVICE_zn_m2=y
 CONFIG_PACKAGE_kmod-ath11k=n
 CONFIG_PACKAGE_kmod-ath11k-ahb=n
 CONFIG_PACKAGE_kmod-ath11k-pci=n
+# ZN-M2 的设备配置默认会附带 ipq-wifi-zn_m2；NoWiFi 构建同步显式排除
+CONFIG_PACKAGE_ipq-wifi-zn_m2=n
 CONFIG_PACKAGE_ath11k-firmware-ipq6018-ddwrt=n
 CONFIG_PACKAGE_ath11k-firmware-qcn9074-ddwrt=n
 CONFIG_PACKAGE_wpad-openssl=n
