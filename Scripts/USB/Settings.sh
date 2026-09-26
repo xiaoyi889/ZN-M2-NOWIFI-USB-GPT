@@ -85,8 +85,6 @@ echo "CONFIG_PACKAGE_kmod-usb-net-cdc-subset=n" >> ./.config
 echo "CONFIG_PACKAGE_kmod-usb-net-huawei-cdc-ncm=n" >> ./.config
 echo "CONFIG_PACKAGE_kmod-usb-net-ipheth=n" >> ./.config
 echo "CONFIG_PACKAGE_kmod-usb-net-qmi-wwan=n" >> ./.config
-echo "CONFIG_PACKAGE_kmod-usb-net-qmi-wwan-fibocom=n" >> ./.config
-echo "CONFIG_PACKAGE_kmod-usb-net-qmi-wwan-quectel=n" >> ./.config
 echo "CONFIG_PACKAGE_kmod-usb-net-rndis=n" >> ./.config
 echo "CONFIG_PACKAGE_kmod-usb-net-rtl8150=n" >> ./.config
 echo "CONFIG_PACKAGE_kmod-usb-net-rtl8152=n" >> ./.config
@@ -95,7 +93,7 @@ echo "CONFIG_PACKAGE_kmod-usb-net-asix-ax88179=n" >> ./.config
 echo "CONFIG_PACKAGE_kmod-usb-net-sierrawireless=n" >> ./.config
 echo "CONFIG_PACKAGE_kmod-usb-ohci=n" >> ./.config
 echo "CONFIG_PACKAGE_kmod-usb-uhci=n" >> ./.config
-echo "CONFIG_PACKAGE_kmod-usb-xhci=n" >> ./.config
+echo "CONFIG_PACKAGE_kmod-usb-xhci-hcd=n" >> ./.config
 
 #其他可选UI组件
 echo "CONFIG_PACKAGE_luci-app-wolultra=y" >> ./.config
@@ -110,7 +108,6 @@ if [[ "${WRT_TARGET^^}" == *"QUALCOMMAX"* ]]; then
 	#开启SQM及其基础脚本；NSS 专用脚本资产由 NSS-SQM-618.sh 注入普通 sqm-scripts
 	echo "CONFIG_PACKAGE_luci-app-sqm=y" >> ./.config
 	echo "CONFIG_PACKAGE_sqm-scripts=y" >> ./.config
-	echo "CONFIG_PACKAGE_sqm-scripts-nss=n" >> ./.config
 	#设置NSS版本
 	echo "CONFIG_NSS_FIRMWARE_VERSION_11_4=n" >> ./.config
 	if [[ "${WRT_CONFIG,,}" == *"ipq50"* ]]; then
