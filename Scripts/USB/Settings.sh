@@ -98,6 +98,12 @@ echo "CONFIG_PACKAGE_kmod-usb-uhci=n" >> ./.config
 echo "CONFIG_PACKAGE_luci-app-wolultra=y" >> ./.config
 echo "CONFIG_PACKAGE_luci-app-statistics=y" >> ./.config
 
+# USB 版本专属：Nikki（Mihomo Meta + Nikki + LuCI）
+echo "CONFIG_PACKAGE_mihomo-meta=y" >> ./.config
+echo "CONFIG_PACKAGE_mihomo-alpha=n" >> ./.config
+echo "CONFIG_PACKAGE_nikki=y" >> ./.config
+echo "CONFIG_PACKAGE_luci-app-nikki=y" >> ./.config
+
 # NoWiFi：上游 ZN-M2 profile 会通过 DEVICE_PACKAGES 强制加入 ipq-wifi-zn_m2，显式移除该设备固件包。
 if [[ "${WRT_CONFIG,,}" == *"wifi"* && "${WRT_CONFIG,,}" == *"no"* ]]; then
 	IPQ60XX_IMAGE="./target/linux/qualcommax/image/ipq60xx.mk"
