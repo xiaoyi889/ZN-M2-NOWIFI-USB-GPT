@@ -41,24 +41,6 @@ UPDATE_PACKAGE() {
 }
 
 
-# Nikki：使用官方 OpenWrt-nikki 的 Mihomo Meta + Nikki + LuCI
-# 不引入 mihomo-alpha，避免 alpha/meta 两个 Mihomo 变体产生 Kconfig 循环依赖。
-INSTALL_NIKKI() {
-	local REPO_NAME="OpenWrt-nikki"
-
-	rm -rf "./$REPO_NAME"
-	git clone --depth=1 --single-branch --branch main "https://github.com/nikkinikki-org/OpenWrt-nikki.git" "$REPO_NAME" || return 1
-
-	for PKG in mihomo-meta nikki luci-app-nikki; do
-		rm -rf "./$PKG"
-		cp -rf "./$REPO_NAME/$PKG" "./$PKG"
-	done
-
-	# 只保留 Mihomo Meta；Alpha 版本与 Meta 互斥且会触发 Kconfig 循环依赖。
-	rm -rf "./$REPO_NAME/mihomo-alpha"
-	rm -rf "./$REPO_NAME"
-}
-
 # 清理当前构建不使用、且存在失效依赖的全量 Feed 包定义
 # 仅删除本次编译工作区中的 feeds 链接目录，不修改上游 Feed 源码。
 BROKEN_FEED_PACKAGES=(
@@ -87,8 +69,6 @@ UPDATE_PACKAGE "aurora" "eamonxg/luci-theme-aurora" "master"
 UPDATE_PACKAGE "aurora-config" "eamonxg/luci-app-aurora-config" "master"
 UPDATE_PACKAGE "kucat" "sirpdboy/luci-theme-kucat" "master"
 UPDATE_PACKAGE "kucat-config" "sirpdboy/luci-app-kucat-config" "master"
-
-INSTALL_NIKKI
 
 UPDATE_PACKAGE "momo" "nikkinikki-org/OpenWrt-momo" "main"
 UPDATE_PACKAGE "openclash" "vernesong/OpenClash" "dev" "pkg"
