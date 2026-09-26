@@ -66,6 +66,10 @@ if [ -f "$NSS_PBUF" ]; then
 	cd $PKG_PATH && echo "qca-nss-pbuf has been fixed!"
 fi
 
+# NSS SQM 6.18：由统一 SH 注入内核 qdisc、tc 与 Qosmio SQM 脚本
+source "$GITHUB_WORKSPACE/Scripts/NSS-SQM-618.sh"
+apply_nss_sqm_618 || exit 1
+
 #修复TailScale配置文件冲突
 TS_FILE=$(find ../feeds/packages/ -maxdepth 3 -type f -wholename "*/tailscale/Makefile")
 if [ -f "$TS_FILE" ]; then
