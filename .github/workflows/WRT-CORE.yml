@@ -113,10 +113,6 @@ jobs:
 
           cd ./wrt/ && echo "WRT_HASH=$(git log -1 --pretty=format:'%H')" >> $GITHUB_ENV
 
-          # NSS 12.5 / Kernel 6.x feed：提供 IPQ60xx NSS 驱动、qdisc/IGS 与固件
-          grep -qxF 'src-git nss_packages https://github.com/qosmio/nss-packages.git^NSS-12.5-K6.x' feeds.conf.default 2>/dev/null || \
-            echo 'src-git nss_packages https://github.com/qosmio/nss-packages.git^NSS-12.5-K6.x' >> feeds.conf.default
-
           # GitHub Action 移除国内下载源
           PROJECT_MIRRORS_FILE="./scripts/projectsmirrors.json"
           if [ -f "$PROJECT_MIRRORS_FILE" ]; then
