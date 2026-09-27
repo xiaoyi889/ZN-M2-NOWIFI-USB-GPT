@@ -56,10 +56,14 @@ echo "CONFIG_PACKAGE_luci-app-statistics=y" >> ./.config
 #高通平台调整
 DTS_PATH="./target/linux/qualcommax/files/arch/arm64/boot/dts/qcom/"
 if [[ "${WRT_TARGET^^}" == *"QUALCOMMAX"* ]]; then
-	#取消nss相关feed
-	echo "CONFIG_FEED_nss_packages=n" >> ./.config
-	echo "CONFIG_FEED_sqm_scripts_nss=n" >> ./.config
-	#开启SQM及其基础脚本；NSS 专用脚本资产由 NSS-SQM-618.sh 注入普通 sqm-scripts
+	# NSS SQM：启用 Qosmio NSS 12.5 / K6.x 驱动栈。
+	# VIKINGYFY 提供 6.18 内核/tc qdisc 补丁；NSS feed 提供实际 qdisc/IGS/driver/firmware。
+	echo "CONFIG_PACKAGE_kmod-qca-nss-drv=y" >> ./.config
+	echo "CONFIG_PACKAGE_kmod-qca-nss-drv-qdisc=y" >> ./.config
+	echo "CONFIG_PACKAGE_kmod-qca-nss-drv-igs=y" >> ./.config
+	echo "CONFIG_NSS_DRV_SHAPER_ENABLE=y" >> ./.config
+	echo "CONFIG_NSS_DRV_IGS_ENABLE=y" >> ./.config
+	echo "CONFIG_NSS_MEM_PROFILE_MEDIUM=y" >> ./.config
 	echo "CONFIG_PACKAGE_luci-app-sqm=y" >> ./.config
 	echo "CONFIG_PACKAGE_sqm-scripts=y" >> ./.config
 	#设置NSS版本
