@@ -8,11 +8,7 @@ name: ZN-M2-NoWiFi-USB
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-  # 自动编译：当 Auto-Clean 运行完成后
-  workflow_run:
-    workflows: ["Auto-Clean"]
-    types:
-      - completed
+  # Auto-Clean 联动已暂停
   # 手动编译
   workflow_dispatch:
     inputs:
