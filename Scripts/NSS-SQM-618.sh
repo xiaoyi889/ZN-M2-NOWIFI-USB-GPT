@@ -95,12 +95,15 @@ apply_nss_sqm_618() {
 		echo "ERROR: qca-nss-drv-qdisc package is missing from NSS feed."
 		return 1
 	}
-	grep -q 'TARGET_qualcommax_ipq60xx' "${NSS_FEED_DIR}/qca-nss-clients/Makefile" || {
-		echo "ERROR: NSS qdisc package does not declare IPQ60xx support."
+	# Qosmio uses the generic TARGET_qualcommax dependency for the base NSS driver/qdisc.
+	# IPQ6018 is selected by CONFIG_TARGET_SUBTARGET=ipq60xx in the driver and by
+	# the ipq60xx subtarget list used by NSS clients.
+	grep -Eq 'CONFIG_TARGET_SUBTARGET.*"ipq60xx"|else ifeq \\([\\$][\\(]CONFIG_TARGET_SUBTARGET[\\)], "ipq60xx"\\)' "${NSS_FEED_DIR}/qca-nss-drv/Makefile" || {
+		echo "ERROR: NSS driver feed has no IPQ60xx subtarget handling."
 		return 1
 	}
-	grep -q 'TARGET_qualcommax_ipq60xx' "${NSS_FEED_DIR}/qca-nss-drv/Makefile" || {
-		echo "ERROR: NSS driver package does not declare IPQ60xx support."
+	grep -Eq 'findstring \\$\\(subtarget\\).*"ipq60xx"' "${NSS_FEED_DIR}/qca-nss-clients/Makefile" || {
+		echo "ERROR: NSS clients feed has no IPQ60xx subtarget handling."
 		return 1
 	}
 
