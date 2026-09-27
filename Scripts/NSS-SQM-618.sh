@@ -7,8 +7,12 @@
 #   (0602/0603) and iproute2 NSS patches (400/500) in the upstream tree.
 #   Do NOT overwrite those upstream patches here.
 #
-# Only the NSS-specific SQM script assets are injected here:
-#   qosmio/sqm-scripts-nss main @ 4b4ed8639229be5e70cf94b73cdf7dbc09e66d5d
+# NSS package feed:
+#   qosmio/nss-packages @ NSS-12.5-K6.x
+#   Provides qca-nss-drv / qca-nss-drv-qdisc / qca-nss-drv-igs / nss-firmware.
+#
+# Only the NSS-specific SQM script asset is injected here:
+#   qosmio/sqm-scripts-nss @ 4b4ed8639229be5e70cf94b73cdf7dbc09e66d5d
 #
 # Do not change .config here. Package selections stay in the build Settings.sh.
 
@@ -53,7 +57,7 @@ apply_nss_sqm_618() {
 
 	# VIKINGYFY already ships the kernel/tc NSS qdisc patches.
 	# Verify them in place, but never replace them with a third-party copy.
-	echo "[1/3] Verify VIKINGYFY upstream NSS kernel/tc patches..."
+	echo "[1/4] Verify VIKINGYFY upstream NSS kernel/tc patches..."
 
 	grep -q 'TCA_ID_MIRRED_NSS' "${KERNEL_PATCH_DIR}/0602-1-qca-nss-drv-add-qdisc-support.patch" || {
 		echo "ERROR: upstream 0602 NSS qdisc patch missing or incomplete."
@@ -81,6 +85,25 @@ apply_nss_sqm_618() {
 		return 1
 	}
 
+	# Kernel patches provide the NSS qdisc ABI/hooks; the actual modules and firmware come from the NSS feed.
+	local NSS_FEED_DIR="${WRT_ROOT}/feeds/nss_packages"
+	if [ ! -f "${NSS_FEED_DIR}/qca-nss-drv/Makefile" ] || [ ! -f "${NSS_FEED_DIR}/qca-nss-clients/Makefile" ]; then
+		echo "ERROR: Qosmio NSS-12.5-K6.x package feed is missing."
+		return 1
+	fi
+	grep -q 'define KernelPackage/qca-nss-drv-qdisc' "${NSS_FEED_DIR}/qca-nss-clients/Makefile" || {
+		echo "ERROR: qca-nss-drv-qdisc package is missing from NSS feed."
+		return 1
+	}
+	grep -q 'TARGET_qualcommax_ipq60xx' "${NSS_FEED_DIR}/qca-nss-clients/Makefile" || {
+		echo "ERROR: NSS qdisc package does not declare IPQ60xx support."
+		return 1
+	}
+	grep -q 'TARGET_qualcommax_ipq60xx' "${NSS_FEED_DIR}/qca-nss-drv/Makefile" || {
+		echo "ERROR: NSS driver package does not declare IPQ60xx support."
+		return 1
+	}
+
 	mkdir -p "${SQM_ASSET_DIR}"
 
 	fetch() {
@@ -98,7 +121,7 @@ apply_nss_sqm_618() {
 		}
 	}
 
-	echo "[2/3] Install Qosmio NSS SQM script assets..."
+	echo "[2/4] Install Qosmio NSS SQM script asset..."
 	fetch "${QOSMIO_RAW}/sqm-scripts-nss/files/nss-zk.qos" 		"${SQM_ASSET_DIR}/nss-zk.qos" || return 1
 	fetch "${QOSMIO_RAW}/sqm-scripts-nss/files/nss-zk.qos.help" 		"${SQM_ASSET_DIR}/nss-zk.qos.help" || return 1
 	chmod 0644 "${SQM_ASSET_DIR}/nss-zk.qos" "${SQM_ASSET_DIR}/nss-zk.qos.help"
@@ -137,7 +160,7 @@ apply_nss_sqm_618() {
 		mv -f "${TMP_SQM_MAKEFILE}" "${SQM_FEED_MAKEFILE}"
 	fi
 
-	echo "[3/3] Verify final NSS SQM integration..."
+	echo "[3/4] Verify final NSS SQM integration..."
 
 	grep -q 'nssfq_codel' "${SQM_ASSET_DIR}/nss-zk.qos" || {
 		echo "ERROR: nss-zk.qos verification failed."
@@ -157,6 +180,7 @@ apply_nss_sqm_618() {
 	echo "NSS SQM 6.18 integration prepared successfully:"
 	echo "  Kernel: VIKINGYFY upstream 0602 + 0603 (verified, not overwritten)"
 	echo "  tc:     VIKINGYFY upstream 400 + 500 (verified, not overwritten)"
+	echo "  NSS:    qosmio/nss-packages NSS-12.5-K6.x (qca-nss-drv + qdisc + IGS + firmware)"
 	echo "  SQM:    nss-zk.qos (Qosmio)"
 	echo "  CONFIG: unchanged"
 	echo "=============================================="
